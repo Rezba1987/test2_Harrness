@@ -4,6 +4,8 @@ metadata:
   name: '{{.Values.NAME}}'
   labels:
     app: '{{.Values.NAME}}'
+  annotations:
+    ad.datadoghq.com/tags: '{"IndexInfo": "true", "IndexDebug": "true", "IndexTrace": "true"}'
 spec:
   replicas: 2
   selector:
