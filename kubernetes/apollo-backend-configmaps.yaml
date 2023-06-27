@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-backend-dashboard
+data:
+  aws_default_region: us-east-1
+  microservice_url_dashboard: http://apollo-backend-dashboard.fss-apollo-main
+  microservice_url_devicemanager: http://apollo-backend-devicemanager.fss-apollo-main
+  microservice_url_videostream: http://apollo-backend-videostream.fss-apollo-main
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-backend-devicemanager
+data:
+  aws_default_region: us-east-1
+  microservice_url_dashboard: http://apollo-backend-dashboard.fss-apollo-main
+  microservice_url_devicemanager: http://apollo-backend-devicemanager.fss-apollo-main
+  microservice_url_videostream: http://apollo-backend-videostream.fss-apollo-main
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-backend-videostream
+data:
+  aws_default_region: us-east-1
+  microservice_url_dashboard: http://apollo-backend-dashboard.fss-apollo-main
+  microservice_url_devicemanager: http://apollo-backend-devicemanager.fss-apollo-main
+  microservice_url_videostream: http://apollo-backend-videostream.fss-apollo-main
+  hls_session_timeout: "43200"

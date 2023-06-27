@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{.Values.NAME}}'
+  labels:
+    app: '{{.Values.NAME}}'
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: '{{.Values.NAME}}'
+  template:
+    metadata:
+      labels:
+        app: '{{.Values.NAME}}'
+    spec:
+      imagePullSecrets:
+        - name: '{{.Values.QUAY_PULL}}'
+      securityContext: {}
+      containers:
+        - name: '{{.Values.NAME}}'
+          image: '{{.Values.IMAGE}}'
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            timeoutSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health/startup
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 10
+          ports:
+          - name: http
+            containerPort: 8080
+          env:
+            - name: K8S_NAMESPACE
+              value: "{{.Values.NAMESPACE}}"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: aws_access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: aws_secret_access_key
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: aws_default_region
+            - name: MICROSERVICE_URL_DASHBOARD
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: microservice_url_dashboard
+            - name: MICROSERVICE_URL_DEVICEMANAGER
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: microservice_url_devicemanager
+            - name: MICROSERVICE_URL_VIDEOSTREAM
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: microservice_url_videostream
+            {{- if eq .Values.NAME "apollo-backend-videostream" }}
+            - name: HLS_SESSION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{.Values.NAME}}"
+                  key: hls_session_timeout
+            {{- end}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: '{{.Values.NAME}}'
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: '{{.Values.NAME}}'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: '{{.Values.NAME}}'
+data:
+  aws_access_key_id: "{{.Values.AWS_ACCESS_KEY_ID}}"
+  aws_secret_access_key: "{{.Values.AWS_SECRET_ACCESS_KEY}}"

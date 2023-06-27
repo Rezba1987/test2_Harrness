@@ -1,0 +1,7 @@
+NAME: apollo-backend-dashboard
+NAMESPACE: <+infra.namespace>
+IMAGE: quay.apps.mgmt-1.hydra.verint.com/fss/apollo-backend-dashboard:latest
+QUAY_PULL: fss-read-only-pull-secret
+
+AWS_ACCESS_KEY_ID: <+serviceVariables.awsaccesskeyid>
+AWS_SECRET_ACCESS_KEY: <+serviceVariables.awssecretaccesskey>
