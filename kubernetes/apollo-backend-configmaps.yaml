@@ -28,4 +28,3 @@ data:
   microservice_url_dashboard: http://apollo-backend-dashboard.fss-apollo-main
   microservice_url_devicemanager: http://apollo-backend-devicemanager.fss-apollo-main
   microservice_url_videostream: http://apollo-backend-videostream.fss-apollo-main
-  hls_session_timeout: "43200"
