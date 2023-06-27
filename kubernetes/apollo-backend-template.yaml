@@ -77,13 +77,6 @@ spec:
                 configMapKeyRef:
                   name: "{{.Values.NAME}}"
                   key: microservice_url_videostream
-            {{- if eq .Values.NAME "apollo-backend-videostream" }}
-            - name: HLS_SESSION_TIMEOUT
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{.Values.NAME}}"
-                  key: hls_session_timeout
-            {{- end}}
 ---
 apiVersion: v1
 kind: Service
